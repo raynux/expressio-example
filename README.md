@@ -15,5 +15,5 @@ To test
 > npm test
 
 Install grunt-cli to watch coffeescript
-> npm -g install grunt-cli
+> npm -g install grunt-cli  
 > grunt watch

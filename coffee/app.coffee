@@ -1,4 +1,3 @@
-port = 8080
 express = require('express.io')
 
 app = express()
@@ -23,4 +22,4 @@ app.io.route 'ready', (req)->
 
 
 # Listen
-app.listen port
+app.listen(process.env.PORT || 8080)

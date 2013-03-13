@@ -1,7 +1,5 @@
 (function() {
-  var app, express, port;
-
-  port = 8080;
+  var app, express;
 
   express = require('express.io');
 
@@ -24,6 +22,6 @@
     });
   });
 
-  app.listen(port);
+  app.listen(process.env.PORT || 8080);
 
 }).call(this);

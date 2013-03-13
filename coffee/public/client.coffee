@@ -1,10 +1,8 @@
-server = 'http://localhost:4567'
-
 class FooView extends Backbone.View
   el: 'body'
 
   initialize: ->
-    @socket = window.io.connect server
+    @socket = window.io.connect()
     @socket.on 'talk', (data)->
       $('#log').prepend "#{data.message}<br/>"
       console.log data

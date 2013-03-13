@@ -1,10 +1,8 @@
 (function() {
-  var FooView, server,
+  var FooView,
     _this = this,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  server = 'http://localhost:4567';
 
   FooView = (function(_super) {
 
@@ -21,7 +19,7 @@
     FooView.prototype.el = 'body';
 
     FooView.prototype.initialize = function() {
-      this.socket = window.io.connect(server);
+      this.socket = window.io.connect();
       this.socket.on('talk', function(data) {
         $('#log').prepend("" + data.message + "<br/>");
         return console.log(data);

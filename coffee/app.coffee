@@ -1,4 +1,4 @@
-port = 4567
+port = 80
 express = require('express.io')
 
 app = express()

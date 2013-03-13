@@ -1,7 +1,7 @@
 (function() {
   var app, express, port;
 
-  port = 4567;
+  port = 8080;
 
   express = require('express.io');
 

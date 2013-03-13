@@ -9,7 +9,7 @@ To setup
 To run, simply
 > npm start
 
-In your browser, go http://localhost:4567 to see how it works
+In your browser, go http://localhost:8080 to see how it works
 
 To test
 > npm test

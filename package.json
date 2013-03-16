@@ -1,6 +1,6 @@
 {
-  "name": "expressio_example",
-  "version": "0.0.1",
+  "name": "expressio-example",
+  "version": "0.0.2",
   "description": "NodeJS + Express.IO example",
   "directories": {
     "test": "test"
@@ -20,6 +20,6 @@
     "test": "mocha -r should --reporter spec"
   },
   "repository": "",
-  "author": "Logical Fabrics",
+  "author": "Logical Fabrics, Inc",
   "license": "BSD"
 }

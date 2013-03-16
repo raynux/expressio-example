@@ -18,8 +18,8 @@ class FooView extends Backbone.View
   fire: ->
     $('#log').prepend "fired<br/>"
     @socket.emit 'ready',
-      name: 'Ray'
-      age: 32
+      foo: 'bar'
+      buz: 42
 
 
 $ ->

@@ -1,7 +1,7 @@
 express = require('express.io')
 
 app = express()
-app.http().io()
+app.http().io() # Run HTTP and IO server
 
 # Static files
 app.configure ->
@@ -15,11 +15,11 @@ app.get '/', (req, res)->
 # Socket.IO Server
 app.io.route 'ready', (req)->
   console.log req.data
+
   #req.io.emit 'talk',
   #req.io.broadcast 'talk',
   app.io.broadcast 'talk',
-    message: 'io event from an io route on the server'
-
-
+    message: "Aw!"
+    
 # Listen
 app.listen(process.env.PORT || 8080)

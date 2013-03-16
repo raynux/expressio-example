@@ -38,8 +38,8 @@
     FooView.prototype.fire = function() {
       $('#log').prepend("fired<br/>");
       return this.socket.emit('ready', {
-        name: 'Ray',
-        age: 32
+        foo: 'bar',
+        buz: 42
       });
     };
 

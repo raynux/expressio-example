@@ -18,7 +18,7 @@
   app.io.route('ready', function(req) {
     console.log(req.data);
     return app.io.broadcast('talk', {
-      message: 'io event from an io route on the server'
+      message: "Aw!"
     });
   });
 

@@ -1,9 +1,11 @@
 module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON('package.json')
-    watch:
-      files: ['coffee/**/*.coffee']
-      tasks: 'coffee'
+
+    regarde:
+      coffee:
+        files: ['coffee/**/*.coffee']
+        tasks: 'coffee'
 
     coffee:
       compile:
@@ -16,5 +18,10 @@ module.exports = (grunt) ->
         ]
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.registerTask 'default', ['watch']
+  grunt.loadNpmTasks 'grunt-regarde'
+
+  grunt.registerTask 'default', ['regarde']
+
+  grunt.event.on 'regarde:file:changed', (action, file)->
+    console.log "#{file} has changed."
+    

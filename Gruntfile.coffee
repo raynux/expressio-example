@@ -3,7 +3,7 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON('package.json')
 
     regarde:
-      coffee:
+      scripts:
         files: ['coffee/**/*.coffee']
         tasks: 'coffee'
 
@@ -21,7 +21,3 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-regarde'
 
   grunt.registerTask 'default', ['regarde']
-
-  grunt.event.on 'regarde:file:changed', (action, file)->
-    console.log "#{file} has changed."
-    

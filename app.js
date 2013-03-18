@@ -3,24 +3,20 @@
 
   express = require('express.io');
 
-  app = express();
+  app = module.exports = express();
 
   app.http().io();
 
   app.configure(function() {
-    return app.use(express["static"](__dirname + '/public'));
+    app.use(express["static"](__dirname + '/public'));
+    return app.set('rootDir', __dirname);
   });
 
-  app.get('/', function(req, res) {
-    return res.sendfile(__dirname + '/public/index.html');
-  });
+  require('./routes/index');
 
-  app.io.route('ready', function(req) {
-    console.log(req.data);
-    return app.io.broadcast('talk', {
-      message: "Aw!"
-    });
-  });
+  require('./routes_io/ready');
+
+  require('./routes_io/commands');
 
   app.listen(process.env.PORT || 8080);
 

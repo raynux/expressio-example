@@ -11,9 +11,24 @@ class FooView extends Backbone.View
 
   events:
     'click #fire': 'fire'
+    'click #create': 'create'
+    'click #update': 'update'
+    'click #delete': 'delete'
 
   render: =>
     $('#log').prepend "rendered<br/>"
+
+  create: ->
+    @socket.emit 'commands:create',
+      command: 'create'
+
+  update: ->
+    @socket.emit 'commands:update',
+      command: 'update'
+
+  delete: ->
+    @socket.emit 'commands:delete',
+      command: 'delete'
 
   fire: ->
     $('#log').prepend "fired<br/>"

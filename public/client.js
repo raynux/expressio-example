@@ -28,11 +28,32 @@
     };
 
     FooView.prototype.events = {
-      'click #fire': 'fire'
+      'click #fire': 'fire',
+      'click #create': 'create',
+      'click #update': 'update',
+      'click #delete': 'delete'
     };
 
     FooView.prototype.render = function() {
       return $('#log').prepend("rendered<br/>");
+    };
+
+    FooView.prototype.create = function() {
+      return this.socket.emit('commands:create', {
+        command: 'create'
+      });
+    };
+
+    FooView.prototype.update = function() {
+      return this.socket.emit('commands:update', {
+        command: 'update'
+      });
+    };
+
+    FooView.prototype["delete"] = function() {
+      return this.socket.emit('commands:delete', {
+        command: 'delete'
+      });
     };
 
     FooView.prototype.fire = function() {

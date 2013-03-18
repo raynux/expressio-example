@@ -14,6 +14,6 @@ In your browser, go http://localhost:8080 to see how it works
 To test
 > npm test
 
-Install grunt-cli to watch coffeescript
-> npm -g install grunt-cli  
-> grunt watch
+Install guard to watch coffeescript
+> gem install guard guard-coffeescript
+> guard

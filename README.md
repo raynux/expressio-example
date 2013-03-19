@@ -11,7 +11,7 @@ To setup
 To run, simply
 > npm start
 
-In your browser, go http://localhost:8080 to see how it works
+In your browser, go http://localhost:5000 to see how it works
 
 To test
 > npm test

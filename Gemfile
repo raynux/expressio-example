@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'foreman'
-gem 'redis'
 
 group :development do
   gem "guard"

@@ -1,23 +1,33 @@
 (function() {
-  var app, express;
+  var app, cluster, cpuNum, express, _i, _ref;
 
-  express = require('express.io');
+  cluster = require('cluster');
 
-  app = module.exports = express();
-
-  app.http().io();
-
-  app.configure(function() {
-    app.use(express["static"](__dirname + '/public'));
-    return app.set('rootDir', __dirname);
-  });
-
-  require('./routes/index');
-
-  require('./routes_io/ready');
-
-  require('./routes_io/commands');
-
-  app.listen(process.env.PORT || 8080);
+  if (cluster.isMaster) {
+    for (cpuNum = _i = 0, _ref = require('os').cpus().length; 0 <= _ref ? _i <= _ref : _i >= _ref; cpuNum = 0 <= _ref ? ++_i : --_i) {
+      cluster.fork();
+    }
+    cluster.on('exit', function(worker, code, signal) {
+      return console.log("worker(" + worker.id + ").exit " + worker.process.pid);
+    });
+    cluster.on('online', function(worker) {
+      return console.log("worker(" + worker.id + ").online " + worker.process.pid);
+    });
+    cluster.on('listening', function(worker, address) {
+      return console.log("worker(" + worker.id + ").listening " + address.address + ":" + address.port);
+    });
+  } else {
+    express = require('express.io');
+    app = module.exports = express();
+    app.http().io();
+    app.configure(function() {
+      app.use(express["static"](__dirname + '/public'));
+      return app.set('rootDir', __dirname);
+    });
+    require('./routes/index');
+    require('./routes_io/ready');
+    require('./routes_io/commands');
+    app.listen(process.env.PORT || 8080);
+  }
 
 }).call(this);

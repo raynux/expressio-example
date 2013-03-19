@@ -7,17 +7,16 @@
   },
   "dependencies": {
     "express.io": "~1.1.9",
-    "should": "~1.2.2",
     "redis": "~0.8.2",
     "mongoose": "~3.6.0",
     "commander": "~1.1.1"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
-    "grunt": "~0.4.0"
+    "should": "~1.2.2"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node app.js -c",
     "test": "mocha -r should --reporter spec"
   },
   "repository": "",

@@ -1,9 +1,9 @@
 cluster = require 'cluster'
+redis = require 'redis'
 
 if cluster.isMaster
-  #for cpuNum in [0 .. require('os').cpus().length]
-  #  cluster.fork()
-  cluster.fork()
+  for cpuNum in [0 .. require('os').cpus().length]
+    cluster.fork()
 
   cluster.on 'exit', (worker, code, signal)->
     console.log "worker(#{worker.id}).exit #{worker.process.pid}"
@@ -18,7 +18,15 @@ else
   express = require 'express.io'
   app = module.exports = express()
   
-  app.http().io() # Run HTTP and IO server
+  # Run HTTP and IO server
+  app.http().io()
+
+  # Setup the redis store for scalable io.
+  app.io.set 'store', new express.io.RedisStore
+    redisPub: redis.createClient()
+    redisSub: redis.createClient()
+    redisClient: redis.createClient()
+
   
   # Static files
   app.configure ->

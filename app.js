@@ -1,10 +1,14 @@
 (function() {
-  var app, cluster, express;
+  var app, cluster, cpuNum, express, redis, _i, _ref;
 
   cluster = require('cluster');
 
+  redis = require('redis');
+
   if (cluster.isMaster) {
-    cluster.fork();
+    for (cpuNum = _i = 0, _ref = require('os').cpus().length; 0 <= _ref ? _i <= _ref : _i >= _ref; cpuNum = 0 <= _ref ? ++_i : --_i) {
+      cluster.fork();
+    }
     cluster.on('exit', function(worker, code, signal) {
       return console.log("worker(" + worker.id + ").exit " + worker.process.pid);
     });
@@ -18,6 +22,11 @@
     express = require('express.io');
     app = module.exports = express();
     app.http().io();
+    app.io.set('store', new express.io.RedisStore({
+      redisPub: redis.createClient(),
+      redisSub: redis.createClient(),
+      redisClient: redis.createClient()
+    }));
     app.configure(function() {
       app.use(express["static"](__dirname + '/public'));
       return app.set('rootDir', __dirname);

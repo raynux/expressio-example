@@ -1,12 +1,10 @@
 (function() {
-  var app, cluster, cpuNum, express, _i, _ref;
+  var app, cluster, express;
 
   cluster = require('cluster');
 
   if (cluster.isMaster) {
-    for (cpuNum = _i = 0, _ref = require('os').cpus().length; 0 <= _ref ? _i <= _ref : _i >= _ref; cpuNum = 0 <= _ref ? ++_i : --_i) {
-      cluster.fork();
-    }
+    cluster.fork();
     cluster.on('exit', function(worker, code, signal) {
       return console.log("worker(" + worker.id + ").exit " + worker.process.pid);
     });

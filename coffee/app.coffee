@@ -1,8 +1,9 @@
 cluster = require 'cluster'
 
 if cluster.isMaster
-  for cpuNum in [0 .. require('os').cpus().length]
-    cluster.fork()
+  #for cpuNum in [0 .. require('os').cpus().length]
+  #  cluster.fork()
+  cluster.fork()
 
   cluster.on 'exit', (worker, code, signal)->
     console.log "worker(#{worker.id}).exit #{worker.process.pid}"

@@ -1,3 +1,3 @@
-web: node-dev app.js
+web: supervisor -q app.js
 redis: redis-server /usr/local/etc/redis.conf
-guard: bundle exec guard
+guard: guard

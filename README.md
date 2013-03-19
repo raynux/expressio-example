@@ -5,7 +5,7 @@ NodeJS + Express.IO example
 
 To setup
 > brew install redis
-> npm -g install node-dev
+> npm -g install supervisor
 > npm install
 
 To run, simply

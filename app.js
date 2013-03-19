@@ -1,25 +1,12 @@
 (function() {
-  var app, cluster, cpuNum, express, redis, _i, _ref;
-
-  cluster = require('cluster');
+  var cluster, express, redis, workerProc, _i, _ref;
 
   redis = require('redis');
 
-  if (cluster.isMaster) {
-    for (cpuNum = _i = 0, _ref = require('os').cpus().length; 0 <= _ref ? _i <= _ref : _i >= _ref; cpuNum = 0 <= _ref ? ++_i : --_i) {
-      cluster.fork();
-    }
-    cluster.on('exit', function(worker, code, signal) {
-      return console.log("worker(" + worker.id + ").exit " + worker.process.pid);
-    });
-    cluster.on('online', function(worker) {
-      return console.log("worker(" + worker.id + ").online " + worker.process.pid);
-    });
-    cluster.on('listening', function(worker, address) {
-      return console.log("worker(" + worker.id + ").listening " + address.address + ":" + address.port);
-    });
-  } else {
-    express = require('express.io');
+  express = require('express.io');
+
+  workerProc = function() {
+    var app;
     app = module.exports = express();
     app.http().io();
     app.io.set('store', new express.io.RedisStore({
@@ -34,7 +21,26 @@
     require('./routes/index');
     require('./routes_io/ready');
     require('./routes_io/commands');
-    app.listen(process.env.PORT || 8080);
+    return app.listen(process.env.PORT || 8080);
+  };
+
+  cluster = require('cluster');
+
+  if (cluster.isMaster) {
+    for (_i = 1, _ref = require('os').cpus().length; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
+      cluster.fork();
+    }
+    cluster.on('exit', function(worker, code, signal) {
+      return console.log("worker(" + worker.id + ").exit " + worker.process.pid);
+    });
+    cluster.on('online', function(worker) {
+      return console.log("worker(" + worker.id + ").online " + worker.process.pid);
+    });
+    cluster.on('listening', function(worker, address) {
+      return console.log("worker(" + worker.id + ").listening " + address.address + ":" + address.port);
+    });
+  } else {
+    workerProc();
   }
 
 }).call(this);

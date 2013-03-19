@@ -1,15 +1,16 @@
 (function() {
-  var FooView, _ref,
+  var FooView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   FooView = (function(_super) {
+
     __extends(FooView, _super);
 
     function FooView() {
-      this.render = __bind(this.render, this);      _ref = FooView.__super__.constructor.apply(this, arguments);
-      return _ref;
+      this.render = __bind(this.render, this);
+      return FooView.__super__.constructor.apply(this, arguments);
     }
 
     FooView.prototype.el = 'body';
@@ -66,7 +67,6 @@
 
   $(function() {
     var fooView;
-
     return fooView = new FooView();
   });
 

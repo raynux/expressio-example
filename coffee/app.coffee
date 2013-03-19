@@ -1,21 +1,7 @@
-cluster = require 'cluster'
 redis = require 'redis'
+express = require 'express.io'
 
-if cluster.isMaster
-  for cpuNum in [0 .. require('os').cpus().length]
-    cluster.fork()
-
-  cluster.on 'exit', (worker, code, signal)->
-    console.log "worker(#{worker.id}).exit #{worker.process.pid}"
-
-  cluster.on 'online', (worker)->
-    console.log "worker(#{worker.id}).online #{worker.process.pid}"
-
-  cluster.on 'listening', (worker, address)->
-    console.log "worker(#{worker.id}).listening #{address.address}:#{address.port}"
-
-else
-  express = require 'express.io'
+workerProc = ->
   app = module.exports = express()
   
   # Run HTTP and IO server
@@ -41,3 +27,24 @@ else
       
   # Listen
   app.listen(process.env.PORT || 8080)
+
+
+#
+# Launching as a cluster
+#
+cluster = require 'cluster'
+if cluster.isMaster
+  for [1 .. require('os').cpus().length]
+    cluster.fork()
+
+  cluster.on 'exit', (worker, code, signal)->
+    console.log "worker(#{worker.id}).exit #{worker.process.pid}"
+
+  cluster.on 'online', (worker)->
+    console.log "worker(#{worker.id}).online #{worker.process.pid}"
+
+  cluster.on 'listening', (worker, address)->
+    console.log "worker(#{worker.id}).listening #{address.address}:#{address.port}"
+
+else
+  workerProc()

@@ -7,13 +7,12 @@
   },
   "dependencies": {
     "express.io": "~1.1.9",
-    "should": "~1.2.2"
+    "should": "~1.2.2",
+    "redis": "~0.8.2"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
-    "grunt": "~0.4.0",
-    "grunt-contrib-coffee": "~0.6.0",
-    "grunt-regarde": "~0.1.1"
+    "grunt": "~0.4.0"
   },
   "scripts": {
     "start": "node app.js",

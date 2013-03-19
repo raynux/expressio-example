@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-
+#
 #
 # Take arguments
 #
 commander = require 'commander'
 commander
-  .version('0.0.1')
   .option('-c, --cluster', 'Run as a cluster')
   .parse(process.argv)
 
@@ -22,7 +21,7 @@ workerProc = ->
   # Express configuration
   config = require('config')
   app.configure ->
-    app.use(express.static(__dirname + '/public'))
+    app.use express.static(__dirname + '/public')
     app.set 'rootDir', __dirname
     app.set 'config', config
 
@@ -59,11 +58,13 @@ if commander.cluster # cluster mode
     for [1 .. require('os').cpus().length]
       cluster.fork()
   
+    ###
     cluster.on 'exit', (worker, code, signal)->
       console.log "worker(#{worker.id}).exit #{worker.process.pid}"
   
     cluster.on 'online', (worker)->
       console.log "worker(#{worker.id}).online #{worker.process.pid}"
+    ###
   
     cluster.on 'listening', (worker, address)->
       console.log "worker(#{worker.id}).listening #{address.address}:#{address.port}"

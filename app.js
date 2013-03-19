@@ -3,7 +3,7 @@
 
   commander = require('commander');
 
-  commander.version('0.0.1').option('-c, --cluster', 'Run as a cluster').parse(process.argv);
+  commander.option('-c, --cluster', 'Run as a cluster').parse(process.argv);
 
   workerProc = function() {
     var app, config, express, mongoose, redis;
@@ -37,12 +37,14 @@
       for (_i = 1, _ref = require('os').cpus().length; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
         cluster.fork();
       }
-      cluster.on('exit', function(worker, code, signal) {
-        return console.log("worker(" + worker.id + ").exit " + worker.process.pid);
-      });
-      cluster.on('online', function(worker) {
-        return console.log("worker(" + worker.id + ").online " + worker.process.pid);
-      });
+      /*
+          cluster.on 'exit', (worker, code, signal)->
+            console.log "worker(#{worker.id}).exit #{worker.process.pid}"
+        
+          cluster.on 'online', (worker)->
+            console.log "worker(#{worker.id}).online #{worker.process.pid}"
+      */
+
       cluster.on('listening', function(worker, address) {
         return console.log("worker(" + worker.id + ").listening " + address.address + ":" + address.port);
       });

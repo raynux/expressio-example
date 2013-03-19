@@ -9,7 +9,9 @@
     "express.io": "~1.1.9",
     "redis": "~0.8.2",
     "mongoose": "~3.6.0",
-    "commander": "~1.1.1"
+    "commander": "~1.1.1",
+    "config": "~0.4.21",
+    "js-yaml": "~2.0.3"
   },
   "devDependencies": {
     "mocha": "~1.8.2",

@@ -15,36 +15,35 @@ commander
 #
 workerProc = ->
   # Load Libraries
-  redis = require 'redis'
   express = require 'express.io'
-  mongoose = require 'mongoose'
-
-  # Connect MongoDB
-  mongoose.connect 'localhost', 'test'
-
-  # Run HTTP and IO server
   app = module.exports = express()
   app.http().io()
 
-  # Setup the redis store for scalable io.
+  # Express configuration
+  config = require('config')
+  app.configure ->
+    app.use(express.static(__dirname + '/public'))
+    app.set 'rootDir', __dirname
+    app.set 'config', config
+
+  
+  # Redis store for scalable io.
+  redis = require 'redis'
   app.io.set 'store', new express.io.RedisStore
     redisPub: redis.createClient()
     redisSub: redis.createClient()
     redisClient: redis.createClient()
 
+  # MongoDB
+  mongoose = require 'mongoose'
+  mongoose.connect config.mongo.server, config.mongo.database
   
-  # Static files
-  app.configure ->
-    app.use(express.static(__dirname + '/public'))
-    app.set 'rootDir', __dirname
-  
-  
-  # HTTP routings
+  # Expres Routings
   require './routes/index'
   require './routes_io/ready'
   require './routes_io/commands'
       
-  # Listen
+  # Run HTTP and IO server
   app.listen(process.env.PORT || 8080)
 
 

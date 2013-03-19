@@ -4,7 +4,7 @@
   app = module.parent.exports;
 
   app.get('/', function(req, res) {
-    return res.sendfile("" + (app.set('rootDir')) + "/public/index.html");
+    return res.sendfile("" + (app.get('rootDir')) + "/public/index.html");
   });
 
 }).call(this);

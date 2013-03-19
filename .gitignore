@@ -2,3 +2,4 @@ node_modules
 Gemfile.lock
 db/*
 .elasticbeanstalk
+config/runtime.json

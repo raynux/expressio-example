@@ -1,4 +1,4 @@
 app = module.parent.exports
 
 app.get '/', (req, res)->
-  res.sendfile("#{app.set('rootDir')}/public/index.html")
+  res.sendfile("#{app.get('rootDir')}/public/index.html")

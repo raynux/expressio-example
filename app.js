@@ -6,22 +6,24 @@
   commander.version('0.0.1').option('-c, --cluster', 'Run as a cluster').parse(process.argv);
 
   workerProc = function() {
-    var app, express, mongoose, redis;
-    redis = require('redis');
+    var app, config, express, mongoose, redis;
     express = require('express.io');
-    mongoose = require('mongoose');
-    mongoose.connect('localhost', 'test');
     app = module.exports = express();
     app.http().io();
+    config = require('config');
+    app.configure(function() {
+      app.use(express["static"](__dirname + '/public'));
+      app.set('rootDir', __dirname);
+      return app.set('config', config);
+    });
+    redis = require('redis');
     app.io.set('store', new express.io.RedisStore({
       redisPub: redis.createClient(),
       redisSub: redis.createClient(),
       redisClient: redis.createClient()
     }));
-    app.configure(function() {
-      app.use(express["static"](__dirname + '/public'));
-      return app.set('rootDir', __dirname);
-    });
+    mongoose = require('mongoose');
+    mongoose.connect(config.mongo.server, config.mongo.database);
     require('./routes/index');
     require('./routes_io/ready');
     require('./routes_io/commands');

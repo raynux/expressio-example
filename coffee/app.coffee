@@ -1,10 +1,29 @@
-redis = require 'redis'
-express = require 'express.io'
+#!/usr/bin/env node
 
+#
+# Take arguments
+#
+commander = require 'commander'
+commander
+  .version('0.0.1')
+  .option('-c, --cluster', 'Run as a cluster')
+  .parse(process.argv)
+
+
+#
+# Worker process
+#
 workerProc = ->
-  app = module.exports = express()
-  
+  # Load Libraries
+  redis = require 'redis'
+  express = require 'express.io'
+  mongoose = require 'mongoose'
+
+  # Connect MongoDB
+  mongoose.connect 'localhost', 'test'
+
   # Run HTTP and IO server
+  app = module.exports = express()
   app.http().io()
 
   # Setup the redis store for scalable io.
@@ -30,21 +49,28 @@ workerProc = ->
 
 
 #
-# Launching as a cluster
+# Launching as a single process or a cluster?
 #
-cluster = require 'cluster'
-if cluster.isMaster
-  for [1 .. require('os').cpus().length]
-    cluster.fork()
+if commander.cluster # cluster mode
+  cluster = require 'cluster'
 
-  cluster.on 'exit', (worker, code, signal)->
-    console.log "worker(#{worker.id}).exit #{worker.process.pid}"
+  if cluster.isMaster
+    console.log 'Running as cluster mode.'
 
-  cluster.on 'online', (worker)->
-    console.log "worker(#{worker.id}).online #{worker.process.pid}"
+    for [1 .. require('os').cpus().length]
+      cluster.fork()
+  
+    cluster.on 'exit', (worker, code, signal)->
+      console.log "worker(#{worker.id}).exit #{worker.process.pid}"
+  
+    cluster.on 'online', (worker)->
+      console.log "worker(#{worker.id}).online #{worker.process.pid}"
+  
+    cluster.on 'listening', (worker, address)->
+      console.log "worker(#{worker.id}).listening #{address.address}:#{address.port}"
+  else
+    workerProc()
 
-  cluster.on 'listening', (worker, address)->
-    console.log "worker(#{worker.id}).listening #{address.address}:#{address.port}"
-
-else
+else # non-cluster mode
+  console.log 'Running as single process mode.'
   workerProc()
